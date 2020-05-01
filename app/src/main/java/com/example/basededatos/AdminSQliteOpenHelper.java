@@ -13,7 +13,7 @@ public class AdminSQliteOpenHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase dbStock) {
-        dbStock.execSQL("create table articules(code int primary key, description text, price real)");
+        dbStock.execSQL("create table articles(code int primary key, description text, price real)");
 
     }
 

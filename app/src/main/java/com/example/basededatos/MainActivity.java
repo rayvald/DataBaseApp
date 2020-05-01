@@ -38,7 +38,7 @@ public class MainActivity extends AppCompatActivity {
             reg.put("description", description);
             reg.put("price", price);
 
-            dataBase.insert("articules", null, reg);
+            dataBase.insert("articles", null, reg);
             dataBase.close();
 
             et_code.setText("");
@@ -61,7 +61,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (!code.isEmpty()){
             Cursor row = database.rawQuery
-                    ("select description, price from articules where code =" + code, null);
+                    ("select description, price from articles where code =" + code, null);
 
             if (row.moveToFirst()){ //moveToFirst valida que nuestra consulta contenga valores
                 et_description.setText(row.getString(0));
@@ -75,6 +75,31 @@ public class MainActivity extends AppCompatActivity {
 
         } else {
             Toast.makeText(this, "Please Insert a Product Code", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    public void delete(View view){
+        AdminSQliteOpenHelper admin = new AdminSQliteOpenHelper(this, "administration", null, 1);
+        SQLiteDatabase database = admin.getWritableDatabase();
+
+        String code = et_code.getText().toString();
+
+        if (!code.isEmpty()){
+            int cant = database.delete("articles", "code="+code, null);
+            database.close();
+
+            et_code.setText("");
+            et_description.setText("");
+            et_price.setText("");
+
+            if (cant == 1){
+                Toast.makeText(this, "Article successfully deleted  ", Toast.LENGTH_SHORT).show();
+            } else{
+                Toast.makeText(this, "The article could not be removed ", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            Toast.makeText(this, "Please Insert a Product Code", Toast.LENGTH_SHORT).show();
+            database.close();
         }
     }
 }
